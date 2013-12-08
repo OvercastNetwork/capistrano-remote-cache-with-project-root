@@ -23,7 +23,7 @@ module Capistrano
 
             
             if copy_exclude.empty? 
-              run "cp -RPp #{cached_project_root} #{configuration[:release_path]} && #{mark}"
+              run "cp -LRPp #{cached_project_root} #{configuration[:release_path]} && #{mark}"
             else
               run "mkdir -p #{configuration[:release_path]}"
               exclusions = copy_exclude.map { |e| "--exclude=\"#{e}\"" }.join(' ')
