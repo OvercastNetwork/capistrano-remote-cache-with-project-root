@@ -1,6 +1,3 @@
-# -*- encoding: utf-8 -*-
-require File.expand_path('../lib/capistrano/recipes/deploy/strategy/remote_cache_with_project_root', __FILE__)
-
 Gem::Specification.new do |gem|
   gem.authors       = ["Matteo Collina"]
   gem.email         = ["matteo.collina@gmail.com"]
@@ -13,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.name          = "capistrano-remote-cache-with-project-root"
   gem.require_paths = ["lib"]
-  gem.version       = Capistrano::Deploy::Strategy::RemoteCacheWithProjectRoot::VERSION
+  gem.version       = '0.0.2'
 
 
   if gem.respond_to? :specification_version then
