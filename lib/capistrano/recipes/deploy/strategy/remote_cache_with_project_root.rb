@@ -12,12 +12,12 @@ module Capistrano
       # it needs a "set :project_root, 'path_to_the_app'" call in your
       # deploy.rb
       class RemoteCacheWithProjectRoot < RemoteCache
-         def copy_repository_cache
+        def copy_repository_cache
 
             cached_project_root = File.join(repository_cache, project_root)
+            set :assets_changed, should_update_assets?(cached_project_root)
 
             logger.trace "copying the cached version from #{cached_project_root} to #{configuration[:release_path]}"
-
 
             if copy_exclude.empty?
               run "cp -LRp #{cached_project_root} #{configuration[:release_path]} && #{mark}"
@@ -26,9 +26,15 @@ module Capistrano
               exclusions = copy_exclude.map { |e| "--exclude=\"#{e}\"" }.join(' ')
               run "rsync -lrpt #{exclusions} #{cached_project_root}/* #{configuration[:release_path]} && #{mark}"
             end
-         end
-      end
+        end
 
+        def should_update_assets?(cached_project_root)
+          from = source.next_revision(current_revision)
+          capture("cd #{cached_project_root} && #{source.local.log(from)} app/assets/ | wc -l").to_i > 0
+        rescue
+          true
+        end
+      end
     end
   end
 end
